@@ -22,12 +22,12 @@ variable "private_key_contents" {
 
 ########################### VPN ###########################
 
-# CIDR block for Client VPN
-variable "vpn_cidr" {
-  description = "CIDR block for the Client VPN"
-  type        = string
-  default     = "10.0.0.0/16"
-}
+# # CIDR block for Client VPN
+# variable "vpn_cidr" {
+#   description = "CIDR block for the Client VPN"
+#   type        = string
+#   default     = "10.0.0.0/16"
+# }
 
 # VPC ID where the Client VPN and Security Group will be created
 variable "vpc_id" {
