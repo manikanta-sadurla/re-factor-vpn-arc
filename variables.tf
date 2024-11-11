@@ -42,16 +42,16 @@ variable "subnet_ids" {
 }
 
 # ARN of the server certificate for Client VPN authentication
-variable "server_certificate_arn" {
-  description = "ARN of the ACM certificate for Client VPN server authentication"
-  type        = string
-}
+# variable "server_certificate_arn" {
+#   description = "ARN of the ACM certificate for Client VPN server authentication"
+#   type        = string
+# }
 
-# ARN of the root certificate chain for client authentication
-variable "root_certificate_chain_arn" {
-  description = "ARN of the root certificate chain for Client VPN client authentication"
-  type        = string
-}
+# # ARN of the root certificate chain for client authentication
+# variable "root_certificate_chain_arn" {
+#   description = "ARN of the root certificate chain for Client VPN client authentication"
+#   type        = string
+# }
 
 # CloudWatch log group name for VPN logging
 variable "log_group_name" {

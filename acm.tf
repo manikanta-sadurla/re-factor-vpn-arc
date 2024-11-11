@@ -37,6 +37,22 @@ resource "tls_self_signed_cert" "default" {
   }
 }
 
+resource "tls_locally_signed_cert" "default" {
+  count = local.acm_enabled ? 1 : 0
+
+  is_ca_certificate = var.basic_constraints.ca
+
+  cert_request_pem   = join("", tls_cert_request.default.*.cert_request_pem)
+  ca_private_key_pem = var.certificate_chain.private_key_pem
+  ca_cert_pem        = var.certificate_chain.cert_pem
+
+  validity_period_hours = var.validity.duration_hours
+  early_renewal_hours   = var.validity.early_renewal_hours
+
+  allowed_uses       = ""
+  set_subject_key_id = ""
+}
+
 # ACM Certificate with imported certificate data if needed
 resource "aws_acm_certificate" "default" {
   count             = local.acm_enabled ? 1 : 0
