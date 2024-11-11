@@ -63,7 +63,7 @@ resource "aws_ec2_client_vpn_network_association" "this" {
   count                  = length(var.subnet_ids)
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.vpn_endpoint.id
   subnet_id              = var.subnet_ids[count.index]
-  vpc_id                 = var.vpc_id
+  # vpc_id                 = var.vpc_id
 }
 
 # resource "aws_ec2_client_vpn_endpoint" "this" {
