@@ -40,16 +40,16 @@ resource "tls_self_signed_cert" "default" {
 resource "tls_locally_signed_cert" "default" {
   count = local.acm_enabled ? 1 : 0
 
-  is_ca_certificate = ""
+  is_ca_certificate = true
   cert_request_pem   = join("", tls_cert_request.default.*.cert_request_pem)
   ca_private_key_pem = var.certificate_chain.private_key_pem
   ca_cert_pem        = var.certificate_chain.cert_pem
 
-  validity_period_hours = ""
-  early_renewal_hours   = ""
+  validity_period_hours = 10
+  early_renewal_hours   = 10
 
-  allowed_uses       = ""
-  set_subject_key_id = ""
+  allowed_uses       = []
+  set_subject_key_id = true
 }
 
 # ACM Certificate with imported certificate data if needed
