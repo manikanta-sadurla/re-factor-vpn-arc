@@ -25,11 +25,11 @@ resource "aws_security_group" "vpn_sg" {
 # AWS Client VPN Endpoint with Certificate-Based Authentication
 resource "aws_ec2_client_vpn_endpoint" "vpn_endpoint" {
   client_cidr_block    = var.vpn_cidr
-  server_certificate_arn = aws_acm_certificate.default.arn
+  server_certificate_arn = aws_acm_certificate.default[0].arn
 
   authentication_options {
     type                       = "certificate-authentication"
-    root_certificate_chain_arn = aws_acm_certificate.default.arn
+    root_certificate_chain_arn = aws_acm_certificate.default[0].arn
   }
 
   connection_log_options {
