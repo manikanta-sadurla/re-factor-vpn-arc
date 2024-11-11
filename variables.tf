@@ -17,7 +17,7 @@ variable "certificate_chain" {
 variable "private_key_contents" {
   description = "Private key content if provided, otherwise a key will be generated"
   type        = string
-  default     = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+  default     = ""
 }
 
 ########################### VPN ###########################
