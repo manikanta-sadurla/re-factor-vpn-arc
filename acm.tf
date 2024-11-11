@@ -43,7 +43,11 @@ resource "tls_locally_signed_cert" "default" {
   is_ca_certificate = true
   cert_request_pem   = join("", tls_cert_request.default.*.cert_request_pem)
   # ca_private_key_pem = var.certificate_chain.private_key_pem
-    ca_private_key_pem = "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
+  ca_private_key_pem = <<EOF
+-----BEGIN PRIVATE KEY-----
+YOUR_PRIVATE_KEY_CONTENT
+-----END PRIVATE KEY-----
+EOF
   ca_cert_pem        = var.certificate_chain.cert_pem
 
   validity_period_hours = 10
