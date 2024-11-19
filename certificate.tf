@@ -7,12 +7,13 @@ provider "aws" {
 resource "null_resource" "generate_certificates" {
   provisioner "local-exec" {
     command = <<EOT
-      set -e
-      # Clone Easy-RSA repository if not already cloned
-      if [ ! -d "$HOME/easy-rsa" ]; then
-        git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
-      fi
+    #   set -e
+    #   # Clone Easy-RSA repository if not already cloned
+    #   if [ ! -d "$HOME/easy-rsa" ]; then
+    #     git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
+    #   fi
       
+      git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
       cd $HOME/easy-rsa/easyrsa3
       
       # Initialize PKI
@@ -41,6 +42,7 @@ resource "null_resource" "generate_certificates" {
     always_run = timestamp()
   }
 }
+
 
 
 # # Read Generated Certificates
