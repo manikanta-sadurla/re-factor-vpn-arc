@@ -9,11 +9,11 @@ resource "null_resource" "generate_certificates" {
     command = <<EOT
       set -e
       # Clone Easy-RSA repository if not already cloned
-      if [ ! -d "easy-rsa" ]; then
-        git clone https://github.com/OpenVPN/easy-rsa.git
+      if [ ! -d "$HOME/easy-rsa" ]; then
+        git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
       fi
       
-      cd easy-rsa/easyrsa3
+      cd $HOME/easy-rsa/easyrsa3
       
       # Initialize PKI
       ./easyrsa init-pki
@@ -28,40 +28,42 @@ resource "null_resource" "generate_certificates" {
       ./easyrsa build-client-full client1.domain.tld nopass
       
       # Copy certificates to a central folder
-      mkdir -p ~/certificates
-      cp pki/ca.crt ~/certificates/
-      cp pki/issued/server.crt ~/certificates/
-      cp pki/private/server.key ~/certificates/
-      cp pki/issued/client1.domain.tld.crt ~/certificates/
-      cp pki/private/client1.domain.tld.key ~/certificates/
+      mkdir -p $HOME/certificates
+      cp pki/ca.crt $HOME/certificates/
+      cp pki/issued/server.crt $HOME/certificates/
+      cp pki/private/server.key $HOME/certificates/
+      cp pki/issued/client1.domain.tld.crt $HOME/certificates/
+      cp pki/private/client1.domain.tld.key $HOME/certificates/
     EOT
   }
   
   triggers = {
-    always_run = timestamp() # Ensures the resource runs every time
+    always_run = timestamp()
   }
 }
 
+
 # Read Generated Certificates
 data "local_file" "ca_cert" {
-  filename = "~/certificates/ca.crt"
+  filename = "${pathexpand("~/certificates/ca.crt")}"
 }
 
 data "local_file" "server_cert" {
-  filename = "~/certificates/server.crt"
+  filename = "${pathexpand("~/certificates/server.crt")}"
 }
 
 data "local_file" "server_key" {
-  filename = "~/certificates/server.key"
+  filename = "${pathexpand("~/certificates/server.key")}"
 }
 
 data "local_file" "client_cert" {
-  filename = "~/certificates/client1.domain.tld.crt"
+  filename = "${pathexpand("~/certificates/client1.domain.tld.crt")}"
 }
 
 data "local_file" "client_key" {
-  filename = "~/certificates/client1.domain.tld.key"
+  filename = "${pathexpand("~/certificates/client1.domain.tld.key")}"
 }
+
 
 # Upload Server Certificate to ACM
 resource "aws_acm_certificate" "server_certificate" {
