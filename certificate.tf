@@ -7,41 +7,47 @@ provider "aws" {
 resource "null_resource" "generate_certificates" {
   provisioner "local-exec" {
     command = <<EOT
-    #   set -e
-    #   # Clone Easy-RSA repository if not already cloned
-    #   if [ ! -d "$HOME/easy-rsa" ]; then
-    #     git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
-    #   fi
+      # Ensure the Easy-RSA repo is cloned
+      if (!(Test-Path -Path "$HOME\\easy-rsa")) {
+        git clone https://github.com/OpenVPN/easy-rsa.git "$HOME\\easy-rsa"
+      }
       
-      git clone https://github.com/OpenVPN/easy-rsa.git $HOME/easy-rsa
-      cd $HOME/easy-rsa/easyrsa3
+      # Navigate to Easy-RSA folder
+      Set-Location -Path "$HOME\\easy-rsa\\easyrsa3"
       
       # Initialize PKI
-      ./easyrsa init-pki
+      .\\easyrsa init-pki
       
       # Build CA
-      ./easyrsa build-ca nopass
+      .\\easyrsa build-ca nopass
       
       # Generate server certificate and key
-      ./easyrsa --san=DNS:server build-server-full server nopass
+      .\\easyrsa --san=DNS:server build-server-full server nopass
       
       # Generate client certificate and key
-      ./easyrsa build-client-full client1.domain.tld nopass
+      .\\easyrsa build-client-full client1.domain.tld nopass
       
-      # Copy certificates to a central folder
-      mkdir -p $HOME/certificates
-      cp pki/ca.crt $HOME/certificates/
-      cp pki/issued/server.crt $HOME/certificates/
-      cp pki/private/server.key $HOME/certificates/
-      cp pki/issued/client1.domain.tld.crt $HOME/certificates/
-      cp pki/private/client1.domain.tld.key $HOME/certificates/
+      # Create certificates folder
+      $certificatesPath = "$HOME\\certificates"
+      if (!(Test-Path -Path $certificatesPath)) {
+        New-Item -ItemType Directory -Path $certificatesPath
+      }
+      
+      # Copy certificates and keys
+      Copy-Item -Path ".\\pki\\ca.crt" -Destination "$certificatesPath\\ca.crt"
+      Copy-Item -Path ".\\pki\\issued\\server.crt" -Destination "$certificatesPath\\server.crt"
+      Copy-Item -Path ".\\pki\\private\\server.key" -Destination "$certificatesPath\\server.key"
+      Copy-Item -Path ".\\pki\\issued\\client1.domain.tld.crt" -Destination "$certificatesPath\\client1.domain.tld.crt"
+      Copy-Item -Path ".\\pki\\private\\client1.domain.tld.key" -Destination "$certificatesPath\\client1.domain.tld.key"
     EOT
+    interpreter = ["PowerShell", "-Command"]
   }
-  
+
   triggers = {
     always_run = timestamp()
   }
 }
+
 
 
 
