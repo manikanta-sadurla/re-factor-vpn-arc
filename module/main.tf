@@ -8,6 +8,7 @@ resource "tls_private_key" "generated_key" {
 
   rsa_bits    = var.private_key_algorithm == "RSA" ? var.rsa_bits : null
   ecdsa_curve = var.private_key_algorithm == "ECDSA" ? var.ecdsa_curve : null
+  
 }
 
 resource "tls_cert_request" "csr" {
@@ -58,10 +59,10 @@ resource "tls_self_signed_cert" "self_signed_cert" {
   ip_addresses = var.additional_ip_addresses
 }
 
-# output "certificate_pem" {
-#   value = var.use_locally_signed_cert ? tls_locally_signed_cert.local_cert[0].cert_pem : tls_self_signed_cert.self_signed_cert[0].cert_pem
-# }
+output "certificate_pem" {
+  value = var.use_locally_signed_cert ? tls_locally_signed_cert.local_cert[0].cert_pem : tls_self_signed_cert.self_signed_cert[0].cert_pem
+}
 
-# output "private_key_pem" {
-#   value = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
-# }
+output "private_key_pem" {
+  value = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
+}

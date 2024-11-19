@@ -79,7 +79,7 @@ variable "allowed_uses" {
 variable "subject_common_name" {
   description = "Common name (CN) for the certificate subject"
   type        = string
-  default     = "example.com"
+  default     = "arc-test-refactor-vpn.com"
 }
 
 variable "subject_organization" {
