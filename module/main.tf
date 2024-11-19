@@ -65,4 +65,5 @@ output "certificate_pem" {
 
 output "private_key_pem" {
   value = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
+  sensitive = false
 }
