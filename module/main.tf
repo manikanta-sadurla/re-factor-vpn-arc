@@ -59,6 +59,12 @@ resource "tls_self_signed_cert" "self_signed_cert" {
   ip_addresses = var.additional_ip_addresses
 }
 
+
+resource "aws_acm_certificate" "example" {
+  private_key = tls_private_key.generated_key[0].private_key_pem
+  certificate_body = tls_self_signed_cert.self_signed_cert[0].cert_pem
+}
+
 output "certificate_pem" {
   value = var.use_locally_signed_cert ? tls_locally_signed_cert.local_cert[0].cert_pem : tls_self_signed_cert.self_signed_cert[0].cert_pem
 }
