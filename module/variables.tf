@@ -88,6 +88,42 @@ variable "subject_organization" {
   default     = "Example Org"
 }
 
+variable "subject_organizational_unit" {
+  description = "Distinguished name: OU (Organizational Unit)."
+  type        = string
+  default     = null
+}
+
+variable "subject_locality" {
+  description = "Distinguished name: L (Locality)."
+  type        = string
+  default     = null
+}
+
+variable "subject_province" {
+  description = "Distinguished name: ST (Province/State)."
+  type        = string
+  default     = null
+}
+
+variable "subject_postal_code" {
+  description = "Distinguished name: PC (Postal Code)."
+  type        = string
+  default     = null
+}
+
+variable "subject_serial_number" {
+  description = "Distinguished name: SERIALNUMBER."
+  type        = string
+  default     = null
+}
+
+variable "subject_street_address" {
+  description = "Distinguished name: STREET (Street Address)."
+  type        = list(string)
+  default     = []
+}
+
 variable "subject_country" {
   description = "Country (C) for the certificate subject"
   type        = string
@@ -104,4 +140,29 @@ variable "additional_ip_addresses" {
   description = "List of additional IP addresses for the certificate"
   type        = list(string)
   default     = []
+}
+
+
+variable "additional_uris" {
+  description = "List of URIs for which a certificate is being requested."
+  type        = list(string)
+  default     = []
+}
+
+variable "early_renewal_hours" {
+  description = "Number of hours before expiration to consider the certificate ready for renewal"
+  type        = number
+  default     = 0
+}
+
+variable "set_subject_key_id" {
+  description = "Whether to include a subject key identifier in the generated certificate"
+  type        = bool
+  default     = false
+}
+
+variable "set_authority_key_id" {
+  description = "Whether to include an authority key identifier in the certificate."
+  type        = bool
+  default     = false
 }
