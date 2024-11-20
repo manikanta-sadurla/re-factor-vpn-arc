@@ -61,7 +61,7 @@ variable "ca_certificate" {
 variable "certificate_validity_hours" {
   description = "Validity period of the certificate in hours"
   type        = number
-  default     = 8760  # 1 year
+  default     = 8760 # 1 year
 }
 
 variable "is_ca" {

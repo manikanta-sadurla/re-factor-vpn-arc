@@ -3,12 +3,12 @@ locals {
 }
 
 resource "tls_private_key" "generated_key" {
-  count    = local.private_key_required ? 1 : 0
+  count     = local.private_key_required ? 1 : 0
   algorithm = var.private_key_algorithm
 
   rsa_bits    = var.private_key_algorithm == "RSA" ? var.rsa_bits : null
   ecdsa_curve = var.private_key_algorithm == "ECDSA" ? var.ecdsa_curve : null
-  
+
 }
 
 resource "tls_cert_request" "csr" {
@@ -17,15 +17,15 @@ resource "tls_cert_request" "csr" {
   private_key_pem = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
 
   subject {
-    common_name           = var.subject_common_name
-    organization          = var.subject_organization
-    organizational_unit   = var.subject_organizational_unit
-    country               = var.subject_country
-    locality              = var.subject_locality
-    province              = var.subject_province
-    postal_code           = var.subject_postal_code
-    serial_number         = var.subject_serial_number
-    street_address        = var.subject_street_address
+    common_name         = var.subject_common_name
+    organization        = var.subject_organization
+    organizational_unit = var.subject_organizational_unit
+    country             = var.subject_country
+    locality            = var.subject_locality
+    province            = var.subject_province
+    postal_code         = var.subject_postal_code
+    serial_number       = var.subject_serial_number
+    street_address      = var.subject_street_address
   }
 
   dns_names    = var.additional_dns_names
@@ -63,15 +63,15 @@ resource "tls_self_signed_cert" "self_signed_cert" {
   allowed_uses = var.allowed_uses
 
   subject {
-    common_name           = var.subject_common_name
-    organization          = var.subject_organization
-    organizational_unit   = var.subject_organizational_unit
-    country               = var.subject_country
-    locality              = var.subject_locality
-    province              = var.subject_province
-    postal_code           = var.subject_postal_code
-    serial_number         = var.subject_serial_number
-    street_address        = var.subject_street_address
+    common_name         = var.subject_common_name
+    organization        = var.subject_organization
+    organizational_unit = var.subject_organizational_unit
+    country             = var.subject_country
+    locality            = var.subject_locality
+    province            = var.subject_province
+    postal_code         = var.subject_postal_code
+    serial_number       = var.subject_serial_number
+    street_address      = var.subject_street_address
   }
 
   dns_names    = var.additional_dns_names
@@ -82,7 +82,7 @@ resource "tls_self_signed_cert" "self_signed_cert" {
 
 
 resource "aws_acm_certificate" "example" {
-  private_key = tls_private_key.generated_key[0].private_key_pem
+  private_key      = tls_private_key.generated_key[0].private_key_pem
   certificate_body = tls_self_signed_cert.self_signed_cert[0].cert_pem
 }
 
@@ -91,6 +91,6 @@ output "certificate_pem" {
 }
 
 output "private_key_pem" {
-  value = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
+  value     = local.private_key_required ? tls_private_key.generated_key[0].private_key_pem : var.private_key
   sensitive = true
 }
